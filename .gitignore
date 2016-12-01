@@ -9,3 +9,12 @@ _ss_environment.php
 
 # ignore composer vendor folder
 /vendor/
+
+
+# ignore
+/cms/
+/framework/
+/reports/
+/siteconfig/
+/timepickerfield/
+/sortablegridfield/
