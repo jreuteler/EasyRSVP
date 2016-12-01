@@ -1,19 +1,17 @@
-
 <!-- BEGIN CONTENT WRAPPER -->
 <div class="content">
-	<div class="container">
-		<div class="row">
+    <div class="container">
+        <div class="row">
 
-			$Content
+            $Content
 
 
-			<div class="event">
-				<% with $Event %>
+            <div class="event">
+                <% with $Event %>
 
-					<h2>$Title</h2>
+                    <h2>$Title</h2>
 
                     <h3>From: $StartDate.Nice  <% if $EndDate %> - Until: $EndDate.Nice<% end_if %> </h3>
-                    (Max. $MaxParticipants people)
 
                     <div class="main-image">
                         $HeaderPhoto.CroppedImage(500,200)
@@ -26,9 +24,9 @@
                         <% loop $EventImages %>
                             <li>
                                 <% if $Width && $Height %>
-                                    <img src="$Image.CroppedImage($Width,$Height).URL" alt="$Image.AltText" />
+                                    <img src="$Image.CroppedImage($Width,$Height).URL" alt="$Image.AltText"/>
                                 <% else %>
-                                    <img src="$Image.URL" alt="$Image.AltText" />
+                                    <img src="$Image.URL" alt="$Image.AltText"/>
                                 <% end_if %>
                             </li>
                         <% end_loop %>
@@ -36,23 +34,23 @@
 
                     <h3>Files</h3>
                     <ul class="files">
-						<% loop $EventFiles %>
+                        <% loop $EventFiles %>
                             <li><a href="$File.URL">$Title <span>($File.Size)</span></a></li>
-						<% end_loop %>
+                        <% end_loop %>
                     </ul>
-				<% end_with %>
-			</div>
+                <% end_with %>
+            </div>
 
 
             <h3>Sign Up</h3>
 
             <% if $AvailableSpots %>
-                <p>Number of attendees is limited, only $AvailableSpots left!</p>
+                <p>Number of attendees is limited, only <b>$AvailableSpots</b> left!</p>
             <% end_if %>
 
             $SignUpForm
 
         </div>
-	</div>
+    </div>
 </div>
 <!-- END CONTENT WRAPPER -->
