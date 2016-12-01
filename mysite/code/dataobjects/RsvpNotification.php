@@ -26,15 +26,13 @@ class RsvpNotification extends DataObject
         $fields = FieldList::create(
             TextField::create('Title'),
             CheckboxField::create('IsActive'),
-            CheckboxField::create('NotificateMember')
+            DropdownField::create('NotificateMember', 'Email Source')->setSource(array(0 => 'From String (enter below)', 1 => 'From selected Member'))
         );
-
 
         // TODO: replace above implementation with replaceField
         //   $fields->replaceField('MyField', DropdownField::create('MyField', 'My field'));
         if ($this->NotificateMember) {
-            //$fields->add(DropdownField::create('Member', 'Member')->setSource(Member::get())); //->map('ID', 'Email')));
-            $fields->add(DropdownField::create('MemberID', 'Member')->setSource(Member::get()->map('ID', 'Email')));
+            $fields->add(DropdownField::create('MemberID', 'Member')->setSource(Member::get()->map('ID', 'Name')));
         } else {
             $fields->add(EmailField::create('Email'));
         }

@@ -12,8 +12,6 @@ require_once('conf/ConfigureFromEnv.php');
 i18n::set_locale('en_US');
 
 
-Member::add_extension('MyMemberExtension');
-
 if(Director::isTest()) {
     SS_Log::add_writer(new SS_LogFileWriter('../silverstripe-errors-warnings.log'), SS_Log::WARN, '<=');
 }
