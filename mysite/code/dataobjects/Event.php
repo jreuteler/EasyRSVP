@@ -175,12 +175,12 @@ class Event extends DataObject
 
         // Notifications Tab
         $useNotifications = CheckboxField::create('UseNotifications');
-        $fields->addFieldsToTab('Root.Notifications', $useNotifications);
+        $fields->addFieldsToTab('Root.Email Notifications', $useNotifications);
 
         if ($this->UseNotifications) {
             $gridFieldConfig = GridFieldConfig_RecordEditor::create();
             $rsvpNotifications = new GridField("RsvpNotifications", "RsvpNotifications", $this->RsvpNotifications(), $gridFieldConfig);
-            $fields->addFieldsToTab('Root.Notifications', $rsvpNotifications);
+            $fields->addFieldsToTab('Root.Email Notifications', $rsvpNotifications);
         }
 
 

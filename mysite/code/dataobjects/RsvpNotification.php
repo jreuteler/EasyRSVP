@@ -13,11 +13,19 @@ class RsvpNotification extends DataObject
 
     );
 
-    static $defaults = array('NotificationDeliveries' => 0, 'NotificationDeliveryFailures' => 0);
+    public static $defaults = array('NotificationDeliveries' => 0, 'NotificationDeliveryFailures' => 0);
 
     public static $has_one = array(
         'Event' => 'Event',
         'Member' => 'Member',
+    );
+
+    public static $summary_fields = array(
+        'Title',
+        'Email',
+        'IsActive',
+        'NotificationDeliveries',
+        'NotificationDeliveryFailures'
     );
 
 
@@ -26,7 +34,7 @@ class RsvpNotification extends DataObject
         $fields = FieldList::create(
             TextField::create('Title'),
             CheckboxField::create('IsActive'),
-            DropdownField::create('NotificateMember', 'Email Source')->setSource(array(0 => 'From String (enter below)', 1 => 'From selected Member'))
+            DropdownField::create('NotificateMember', 'Email Source')->setSource(array(0 => 'From String (enter below)', 1 => 'From selected Member'))->setDescription('Will update the fieldlist after saving ')
         );
 
         // TODO: replace above implementation with replaceField
@@ -39,14 +47,6 @@ class RsvpNotification extends DataObject
 
         return $fields;
     }
-
-    public static $summary_fields = array(
-        'Title',
-        'Email',
-        'IsActive',
-        'NotificationDeliveries',
-        'NotificationDeliveryFailures'
-    );
 
 
     public function Email()
