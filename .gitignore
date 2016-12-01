@@ -11,10 +11,11 @@ _ss_environment.php
 /vendor/
 
 
-# ignore
+# ignore folders
 /cms/
 /framework/
 /reports/
 /siteconfig/
+/themes/simple/
 /timepickerfield/
 /sortablegridfield/
