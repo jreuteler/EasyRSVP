@@ -5,7 +5,6 @@
 
             $Content
 
-
             <div class="event">
                 <% with $Event %>
 
@@ -14,7 +13,7 @@
                     <h3>From: $StartDate.Nice  <% if $EndDate %> - Until: $EndDate.Nice<% end_if %> </h3>
 
                     <div class="main-image">
-                        $HeaderPhoto.CroppedImage(500,200)
+                        $HeaderPhoto.CroppedImage(600,300)
                     </div>
 
                     <p class="description">$Description</p>
