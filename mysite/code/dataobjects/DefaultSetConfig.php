@@ -13,6 +13,12 @@ class DefaultSetConfig extends DataObject
         'RsvpFields' => 'RsvpField'
     );
 
+    private static $summary_fields = array(
+        'Title',
+        'Name',
+        'Value'
+    );
+
 
     public function getCMSFields()
     {
