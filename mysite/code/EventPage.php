@@ -71,17 +71,22 @@ class EventPage_Controller extends Page_Controller
 
     public function doSignUp($data, $form)
     {
+        // TODO: check if maximum was reached in the meantime and if so, inform user
+
         Session::set("FormData.{$form->getName()}.data", $data);
         $rsvpFields = $this->Event()->getManyManyComponents('RsvpFields')->sort('SortOrder');
+
+        $emailData = array();
         foreach ($rsvpFields as $rsvpField) {
 
+            $formField = $form->Fields()->fieldByName($rsvpField->Name);
             if ($rsvpField->DoRemember) {
                 // temporary implementation to retrieve value of simple fields
                 $cookieName = self::$formActionName . '_' . $rsvpField->Name;
-                $formField = $form->Fields()->fieldByName($rsvpField->Name);
                 Cookie::set($cookieName, $formField->value);
             }
 
+            $emailData[] = array('Name' => $rsvpField->Name, 'Value' => $formField->value);
         }
 
         $registration = RsvpRegistration::create();
@@ -94,6 +99,37 @@ class EventPage_Controller extends Page_Controller
 
         Session::clear("FormData.{$form->getName()}.data");
         $form->sessionMessage('Thanks for signing up!', 'good');
+
+
+        // send notifications
+        if ($this->Event()->UseNotifications) {
+
+            $notifications = $this->Event()->RsvpNotifications();
+            foreach ($notifications as $notification) {
+
+                if ($notification->IsActive) {
+
+                    $recieverEmail = $notification->Email;
+                    if ($notification->NotificateMember) {
+                        $recieverEmail = $notification->Member()->Email;
+                    }
+
+                    echo $notification->Email();
+
+                    $sent = EmailHelper::sendRegistrationNotification($recieverEmail, 'New registration for ' . $this->Event()->Title, 'RsvpNotificationEmail', $this->Event(), $emailData);
+
+                    if($sent) {
+                        $notification->NotificationDeliveries++;
+                    } else {
+                        $notification->NotificationDeliveryFailures++;
+                    }
+                    $notification->write();
+
+                }
+
+            }
+        }
+
 
         return $this->redirectBack();
 

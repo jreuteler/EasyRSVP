@@ -16,6 +16,8 @@ class EventImage extends DataObject
         'Image' => 'Image',
     );
 
+    // TODO: prevent resize attept when width/height 0
+
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();

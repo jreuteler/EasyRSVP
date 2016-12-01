@@ -12,7 +12,10 @@ class Event extends DataObject
         'EndDate' => 'Datetime',
         'MaxParticipants' => 'Int',
         //'EntryFee' => 'Money',
-        'Description' => 'Text',
+        'Description' => 'HTMLText',
+        'UseNotifications' => 'Boolean',
+        'EventImagesWidth' => 'Int',
+        'EventImagesHeight' => 'Int',
         'FormFieldVersion' => 'Int', // TODO: implement logic to increment after every (relevant!) change on the form
     );
 
@@ -24,6 +27,7 @@ class Event extends DataObject
 
     private static $has_many = array(
         'RsvpRegistrations' => 'RsvpRegistration',
+        'RsvpNotifications' => 'RsvpNotification',
     );
 
     private static $many_many = array(
@@ -117,7 +121,7 @@ class Event extends DataObject
 
         $eventFields = array(
             TextField::create('Title'),
-            TextareaField::create('Description'),
+            HtmlEditorField::create('Description'),
             NumericField::create('MaxParticipants'),
             CheckboxField::create('HasTime'),
             CheckboxField::create('HasEnd'),
@@ -126,6 +130,7 @@ class Event extends DataObject
         if ($this->HasEnd) {
             array_push($eventFields, $end);
         }
+
 
         $fields->addFieldsToTab('Root.Main', $eventFields);
 
@@ -145,11 +150,13 @@ class Event extends DataObject
         $gridFieldConfig->addComponent(new GridFieldSortableRows('SortOrder'));
         $photos = new GridField("EventImages", "Event Images", $this->EventImages()->sort("SortOrder"), $gridFieldConfig);
 
+
         $gridFieldConfig = GridFieldConfig_RecordEditor::create(); //create(10)
         $gridFieldConfig->addComponent(new GridFieldSortableRows('SortOrder'));
         $files = new GridField("EventFiles", "Event Files", $this->EventFiles()->sort("SortOrder"), $gridFieldConfig);
 
-        $fields->addFieldsToTab('Root.Media', array($upload, $photos, $files));
+        $fields->addFieldsToTab('Root.Media', array($upload, NumericField::create('EventImagesWidth'),
+            NumericField::create('EventImagesHeight'), $photos, $files));
 
 
         // Registrations
@@ -164,6 +171,17 @@ class Event extends DataObject
         $conf->addComponent(new GridFieldSortableRows('SortOrder'));
 
         $fields->addFieldToTab('Root.Form fields', new GridField('RsvpFields', 'RsvpFields', $this->RsvpFields(), $conf));
+
+
+        // Notifications Tab
+        $useNotifications = CheckboxField::create('UseNotifications');
+        $fields->addFieldsToTab('Root.Notifications', $useNotifications);
+
+        if ($this->UseNotifications) {
+            $gridFieldConfig = GridFieldConfig_RecordEditor::create();
+            $rsvpNotifications = new GridField("RsvpNotifications", "RsvpNotifications", $this->RsvpNotifications(), $gridFieldConfig);
+            $fields->addFieldsToTab('Root.Notifications', $rsvpNotifications);
+        }
 
 
         return $fields;

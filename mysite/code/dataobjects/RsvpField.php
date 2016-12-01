@@ -2,7 +2,6 @@
 
 class RsvpField extends DataObject
 {
-
     private static $db = array(
         'Name' => 'Varchar',
         'Label' => 'Varchar',
@@ -33,7 +32,6 @@ class RsvpField extends DataObject
     );
 
     // TODO: validation for fieldname value etc
-
     public function getCMSFields()
     {
         $arrDataTypes = array(); // TODO: implement/remove
