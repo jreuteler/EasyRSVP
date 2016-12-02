@@ -19,9 +19,9 @@ class DBLogger
         $log->UserAgent = $_SERVER['HTTP_USER_AGENT'];
 
         // check if log happened during frontend or backend
-        $source = 2;
+        $source = 'FE'; // set to frontend as default
         if (is_subclass_of(Controller::curr(), "LeftAndMain")) {
-            $source = 1; // is backend
+            $source = 'BE'; // is backend
         }
         $log->Source = $source;
         $log->Action = Controller::curr()->getAction();

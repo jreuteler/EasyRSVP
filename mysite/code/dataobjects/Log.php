@@ -7,7 +7,7 @@ class Log extends DataObject
         'Category' => 'Enum(array("ERROR","ACCESS","GENERAL", "FILES", "CONFIGURATION"), "GENERAL")',
         'Method' => 'Varchar',
         'Action' => 'Varchar',
-        'Source' => 'Int',
+        'Source' => 'Varchar(2)',
         'UserAgent' => 'Varchar',
         'IpAddress' => 'Varchar',
         'Message' => 'Text',
@@ -32,20 +32,7 @@ class Log extends DataObject
         $fields = parent::getCMSFields();
         return $fields;
     }
-
-    public function Source()
-    {
-        switch ($this->Source) {
-            case 1:
-                return 'BE';
-            case 2:
-                return 'FE';
-            default;
-                return '';
-        }
-    }
-
-
+    
     function canCreate($member = NULL)
     {
         return false;
