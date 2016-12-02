@@ -29,9 +29,10 @@ class RsvpRegistration extends DataObject
          */
         // TODO: implement edit functionality of serialised field values through this form
 
-        $fields = FieldList::create();
+
+        $fields = FieldList::create(TabSet::create('Root'));
         $rsvpFields = $this->Event()->getManyManyComponents('RsvpFields')->sort('SortOrder');
-        $fields->add(ReadonlyField::create('FormFieldVersion'));
+        $fields->addFieldsToTab('Root.Registration', ReadonlyField::create('FormFieldVersion'));
 
         $data = unserialize($this->Data);
 
@@ -48,13 +49,13 @@ class RsvpRegistration extends DataObject
                     unset($data[$rsvpField->Name]);
                 }
 
-                $fields->add($field);
-
+                //TODO: apply dynamic setConfig!
+                $fields->addFieldToTab('Root.Registration', $field);
             }
 
         }
 
-        // get rest of the serialised data and present it in a read only field
+        // get the rest of the serialised data (those not in latest version of rsvpfields) and make it human readable in a ReadonlyField
         $leftOverFieldString = '';
         foreach ($data as $fieldName => $fieldValue) {
             $leftOverFieldString .= $fieldName . ' = ' . $fieldValue . "\n";
@@ -62,7 +63,13 @@ class RsvpRegistration extends DataObject
 
         $leftOverFields = ReadonlyField::create('Other values');
         $leftOverFields->value = $leftOverFieldString;
-        $fields->add($leftOverFields);
+        $fields->addFieldsToTab('Root.Registration', $leftOverFields);
+
+        // RAW data
+        $rawData = ReadonlyField::create('Data');
+        $rawData->value = $this->Data;
+        $fields->addFieldsToTab('Root.RAW Data', $rawData);
+
 
         return $fields;
     }
