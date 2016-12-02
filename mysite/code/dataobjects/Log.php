@@ -9,6 +9,7 @@ class Log extends DataObject
         'Message' => 'Text',
         'Action' => 'Varchar',
         'Source' => 'Int',
+        'UserAgent' => 'Varchar',
         'IpAddress' => 'Varchar',
     );
 
