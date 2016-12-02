@@ -22,6 +22,8 @@ class RsvpRegistration extends DataObject
 
     public function getCMSFields()
     {
+        DBLogger::log('creating the registration fields', __METHOD__, SS_GENERAL);
+
         /*
          * create cms fields depending on the dynamically defined rsvp_fields, populate
          * them with the serialised data and lastly add a field with all the form values not defined
