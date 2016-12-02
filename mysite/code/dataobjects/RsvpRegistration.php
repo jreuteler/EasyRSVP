@@ -91,5 +91,16 @@ class RsvpRegistration extends DataObject
         return $implodedString;
     }
 
+    function canCreate($member = NULL)
+    {
+        return false;
+    }
+
+    function canEdit($member = NULL)
+    {
+        return false;
+    }
+
+
 
 }
