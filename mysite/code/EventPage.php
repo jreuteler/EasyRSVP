@@ -35,6 +35,9 @@ class EventPage_Controller extends Page_Controller
 
     public function SignUpForm()
     {
+
+        DBLogger::log('Generating form for frontend...', __METHOD__, SS_GENERAL);
+
         $dynamicFields = array();
         $rsvpFields = $this->Event()->getManyManyComponents('RsvpFields')->sort('SortOrder');
         foreach ($rsvpFields as $rsvpField) {
@@ -44,6 +47,8 @@ class EventPage_Controller extends Page_Controller
 
             if ($dynamicField)
                 $dynamicFields[] = $dynamicField;
+            else
+                DBLogger::log('Field could not be generated from RsvpField configuration (ID: '.$rsvpField->ID.', Name: '.$rsvpField->Name.') could not be generated...', __METHOD__, SS_ERROR);
 
         }
 
@@ -71,6 +76,8 @@ class EventPage_Controller extends Page_Controller
 
     public function doSignUp($data, $form)
     {
+        DBLogger::log(print_r($data, true), __METHOD__, SS_GENERAL);
+
         // TODO: check if maximum was reached in the meantime and if so, inform user
 
         Session::set("FormData.{$form->getName()}.data", $data);
@@ -129,7 +136,6 @@ class EventPage_Controller extends Page_Controller
 
             }
         }
-
 
         return $this->redirectBack();
 
