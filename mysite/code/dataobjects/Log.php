@@ -4,13 +4,14 @@ class Log extends DataObject
 {
 
     public static $db = array(
-        'Method' => 'Varchar',
         'Category' => 'Enum(array("ERROR","ACCESS","GENERAL", "FILES", "CONFIGURATION"), "GENERAL")',
-        'Message' => 'Text',
+        'Method' => 'Varchar',
         'Action' => 'Varchar',
         'Source' => 'Int',
         'UserAgent' => 'Varchar',
         'IpAddress' => 'Varchar',
+        'Message' => 'Text',
+
     );
 
     private static $has_one = array(
@@ -50,5 +51,9 @@ class Log extends DataObject
         return false;
     }
 
+    function canEdit($member = NULL)
+    {
+        return false;
+    }
 
 }

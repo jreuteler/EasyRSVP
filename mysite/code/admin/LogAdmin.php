@@ -3,7 +3,7 @@
 class LogAdmin extends ModelAdmin
 {
 
-    private static $menu_title = 'DBLogs';
+    private static $menu_title = 'Logs';
 
     private static $url_segment = 'logs';
 
