@@ -16,7 +16,9 @@ class EventImage extends DataObject
         'Image' => 'Image',
     );
 
-    // TODO: prevent resize attept when width/height 0
+    private static $belongs_many_many = array(
+        'Events' => 'Event'
+    );
 
     public function getCMSFields()
     {

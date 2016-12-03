@@ -14,6 +14,10 @@ class EventFile extends DataObject
         'File' => 'File',
     );
 
+    private static $belongs_many_many = array(
+        'Events' => 'Event'
+    );
+
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
