@@ -31,7 +31,7 @@ class EventPage_Controller extends Page_Controller
         'SignUpForm',
     );
 
-    private static $formActionName = 'doSignup';
+    public static $formActionName = 'doSignup';
 
     public function SignUpForm()
     {
@@ -41,9 +41,8 @@ class EventPage_Controller extends Page_Controller
         $dynamicFields = array();
         $rsvpFields = $this->Event()->getManyManyComponents('RsvpFields')->sort('SortOrder');
         foreach ($rsvpFields as $rsvpField) {
-
-            $setConfigs = $rsvpField->getManyManyComponents('DefaultSetConfigs');
-            $dynamicField = DynamicFormField::createFieldFromRsvpConfig(self::$formActionName, $rsvpField, $setConfigs);
+            
+            $dynamicField = DynamicFormField::createFieldFromRsvpConfig(self::$formActionName, $rsvpField);
 
             if ($dynamicField)
                 $dynamicFields[] = $dynamicField;

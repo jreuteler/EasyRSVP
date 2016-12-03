@@ -38,18 +38,12 @@ class RsvpRegistration extends DataObject
 
         foreach ($rsvpFields as $rsvpField) {
 
-            $className = DynamicFormField::$dynamicFieldTypes[$rsvpField->FieldType];
-
-            // TODO: extract this check into seperate class and do check wherever required to prevent/catch errors
-            if (class_exists($className) && is_subclass_of(new $className('test'), 'FormField')) {
-                $field = $className::create($rsvpField->Name);
-
+            if ($field = DynamicFormField::createFieldFromRsvpConfig(EventPage_Controller::$formActionName, $rsvpField)) {
                 if (isset($data[$rsvpField->Name])) {
                     $field->value = $data[$rsvpField->Name];
                     unset($data[$rsvpField->Name]);
                 }
 
-                //TODO: apply dynamic setConfig!
                 $fields->addFieldToTab('Root.Registration', $field);
             }
 
@@ -98,7 +92,6 @@ class RsvpRegistration extends DataObject
     {
         return false;
     }
-
 
 
 }
