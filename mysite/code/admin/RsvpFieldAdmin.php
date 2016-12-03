@@ -10,5 +10,5 @@ class RsvpFieldAdmin extends ModelAdmin {
 		'RsvpField'
 	);
 
-	private static $menu_icon = 'mysite/icons/RsvpField.png';
+	private static $menu_icon = 'mysite/icons/rsvpfields.png';
 }
