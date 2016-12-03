@@ -37,7 +37,7 @@ class RsvpNotification extends DataObject
             DropdownField::create('NotificateMember', 'Email Source')->setSource(array(0 => 'From String (enter below)', 1 => 'From selected Member'))->setDescription('Will update the fieldlist after saving ')
         );
 
-        // TODO: replace above implementation with replaceField
+        // TODO: test replacing implementation below with replaceField
         //   $fields->replaceField('MyField', DropdownField::create('MyField', 'My field'));
         if ($this->NotificateMember) {
             $fields->add(DropdownField::create('MemberID', 'Member')->setSource(Member::get()->map('ID', 'Name')));
