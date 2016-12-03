@@ -42,8 +42,13 @@ class EventImage extends DataObject
 
     public function GetSize()
     {
+        $event = $this->getManyManyComponents('Events')->first();
+
         if ($this->Width && $this->Height)
             return $this->Width . ' x ' . $this->Height;
+        else  if($event && $event->EventImagesWidth && $event->EventImagesHeight) {
+            return $event->EventImagesWidth . ' x ' . $event->EventImagesHeight;
+        }
 
         return ' ';
     }
