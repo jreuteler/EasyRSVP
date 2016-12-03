@@ -75,7 +75,7 @@ class EventPage_Controller extends Page_Controller
 
     public function doSignUp($data, $form)
     {
-        DBLogger::log(print_r($data, true), __METHOD__, SS_GENERAL);
+        DBLogger::log($data, __METHOD__, SS_GENERAL);
 
         // TODO: check if maximum was reached in the meantime and if so, inform user
 
