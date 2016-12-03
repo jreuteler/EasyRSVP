@@ -33,6 +33,15 @@ class EventPage_Controller extends Page_Controller
 
     public static $formActionName = 'doSignup';
 
+    public function init() {
+        parent::init();
+        // You can include any CSS or JS required by your project here.
+        // See: http://doc.silverstripe.org/framework/en/reference/requirements
+
+        Requirements::css(EASY_RSVP_BASE."/css/gallery.css");
+        Requirements::javascript("http://thecodeplayer.com/uploads/js/prefixfree.js");
+    }
+
     public function SignUpForm()
     {
 
