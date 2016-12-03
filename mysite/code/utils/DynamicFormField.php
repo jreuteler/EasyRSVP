@@ -45,10 +45,22 @@ class DynamicFormField
 
             $setConfigs = $rsvpField->getManyManyComponents('DefaultSetConfigs');
 
+
             foreach ($setConfigs as $setConfig) {
 
                 // apply all defined setConfig on the given field
-                $field->setConfig('' . $setConfig->Name, $setConfig->Value);  // TODO: check for invalid names/values
+                try {
+                    $field->setConfig('' . $setConfig->Name, $setConfig->Value);
+                    $setConfig->HasError = 0;
+                } catch (Exception $e) {
+                    $setConfig->HasError = 1;
+                    $logMessage = "Invalid SetConfig added for field " . $field->Name . " \n
+                        - SetConfig(" . $setConfig->Name . ", " . $setConfig->Value . ") will be ignored. \n
+                        Exception: " . $e->getMessage();
+                    DBLogger::log($logMessage, __METHOD__, SS_LOG_ERROR);
+                }
+                $setConfig->write();
+
             }
 
             // temporary implementation to store value of simple fields
@@ -64,6 +76,20 @@ class DynamicFormField
             return $field;
         }
 
+    }
+
+
+    public static function getRequiredFields($rsvpFields)
+    {
+        $requiredFields = array();
+        foreach ($rsvpFields as $rsvpField) {
+
+            if ($rsvpField->IsMandatory) {
+                $requiredFields[] = $rsvpField->Name;
+            }
+        }
+
+        return $requiredFields;
     }
 
 
