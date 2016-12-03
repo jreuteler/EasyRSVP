@@ -33,12 +33,13 @@ class EventPage_Controller extends Page_Controller
 
     public static $formActionName = 'doSignup';
 
-    public function init() {
+    public function init()
+    {
         parent::init();
         // You can include any CSS or JS required by your project here.
         // See: http://doc.silverstripe.org/framework/en/reference/requirements
 
-        Requirements::css(EASY_RSVP_BASE."/css/gallery.css");
+        Requirements::css(EASY_RSVP_BASE . "/css/gallery.css");
         Requirements::javascript("http://thecodeplayer.com/uploads/js/prefixfree.js");
     }
 
@@ -50,13 +51,13 @@ class EventPage_Controller extends Page_Controller
         $dynamicFields = array();
         $rsvpFields = $this->Event()->getManyManyComponents('RsvpFields')->sort('SortOrder');
         foreach ($rsvpFields as $rsvpField) {
-            
+
             $dynamicField = DynamicFormField::createFieldFromRsvpConfig(self::$formActionName, $rsvpField);
 
             if ($dynamicField)
                 $dynamicFields[] = $dynamicField;
             else
-                DBLogger::log('Field could not be generated from RsvpField configuration (ID: '.$rsvpField->ID.', Name: '.$rsvpField->Name.') could not be generated...', __METHOD__, SS_LOG_ERROR);
+                DBLogger::log('Field could not be generated from RsvpField configuration (ID: ' . $rsvpField->ID . ', Name: ' . $rsvpField->Name . ') could not be generated...', __METHOD__, SS_LOG_ERROR);
 
         }
 
@@ -70,8 +71,8 @@ class EventPage_Controller extends Page_Controller
                 FormAction::create(self::$formActionName, 'Sign up')
                     ->setUseButtonTag(true)
                     ->addExtraClass('btn btn-default-color btn-lg')
-            )
-        //RequiredFields::create('Name','Email','Comment') // TODO: validate, get those fields from RSVP Table
+            ),
+            RequiredFields::create(DynamicFormField::getRequiredFields($rsvpFields))
 
         );
 
@@ -133,7 +134,7 @@ class EventPage_Controller extends Page_Controller
 
                     $sent = EmailHelper::sendRegistrationNotification($recieverEmail, 'New registration for ' . $this->Event()->Title, 'RsvpNotificationEmail', $this->Event(), $emailData);
 
-                    if($sent) {
+                    if ($sent) {
                         $notification->NotificationDeliveries++;
                     } else {
                         $notification->NotificationDeliveryFailures++;
