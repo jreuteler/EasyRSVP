@@ -7,13 +7,17 @@ class DefaultSetConfig extends DataObject
         'Title' => 'Varchar',
         'Name' => 'Varchar',
         'Value' => 'Varchar',
+        'HasError'  => 'Int'
     );
 
     private static $belongs_many_many = array(
         'RsvpFields' => 'RsvpField'
     );
 
+    public static $defaults = array('HasConfigError' => 0);
+
     private static $summary_fields = array(
+        'Status',
         'Title',
         'Name',
         'Value'
@@ -31,6 +35,40 @@ class DefaultSetConfig extends DataObject
 
         return $fields;
     }
+
+    public function Status()
+    {
+        // TODO: find cleaner/shorter  solution
+        $folder = Folder::find_or_make('images/db-log');
+
+        if($this->HasError) {
+
+            $image = Image::create(array(
+                'Name' => 'Configuration warning',
+                'ParentID' => $folder->ID,
+                'Filename' => 'mysite/icons/status_warning.png'
+            ));
+
+            $image->write();
+
+
+        } else {
+            $image = Image::create(array(
+                'Name' => 'Configuration valid',
+                'ParentID' => $folder->ID,
+                'Filename' => 'mysite/icons/status_ok.png'
+            ));
+
+            $image->write();
+        }
+
+        if ($image->exists()) {
+            return $image->SetWidth(16);
+        }
+
+        return '';
+    }
+
 
 
 }
