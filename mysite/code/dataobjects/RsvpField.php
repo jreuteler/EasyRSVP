@@ -21,7 +21,6 @@ class RsvpField extends DataObject
     private static $belongs_many_many = array(
         'Events' => 'Event'
     );
-
     private static $summary_fields = array(
         'Name',
         'FieldType',
@@ -34,8 +33,6 @@ class RsvpField extends DataObject
     // TODO: validation for fieldname value etc
     public function getCMSFields()
     {
-        $arrDataTypes = array(); // TODO: implement/remove
-
         $fields = FieldList::create(
             TextField::create('Name'),
             TextField::create('Label'),
@@ -44,6 +41,8 @@ class RsvpField extends DataObject
             //DropdownField::create('DataType', 'DataType', $arrDataTypes),
             CheckboxField::create('IsMandatory', 'Mandatory'),
             CheckboxField::create('DoRemember', 'Remember value'),
+            LabelField::create('Field-Preview: '),
+            DynamicFormField::createFieldFromRsvpConfig('Preview', $this),
             $setConfigs = new GridField(
                 'DefaultSetConfigs',
                 'DefaultSetConfigs',
