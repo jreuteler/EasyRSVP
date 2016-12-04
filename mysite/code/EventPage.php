@@ -45,9 +45,6 @@ class EventPage_Controller extends Page_Controller
 
     public function SignUpForm()
     {
-
-        DBLogger::log('Generating form for frontend...', __METHOD__, SS_LOG_GENERAL);
-
         $dynamicFields = array();
         $rsvpFields = $this->Event()->getManyManyComponents('RsvpFields')->sort('SortOrder');
         foreach ($rsvpFields as $rsvpField) {
