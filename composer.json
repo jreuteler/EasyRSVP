@@ -10,7 +10,7 @@
 		"silverstripe-themes/simple": "3.1.*",
 		"undefinedoffset/sortablegridfield": "^0.6.5",
 		"silverstripe/timepickerfield": "^1.0",
-		"jreuteler/silverstripe-db-log": "dev-master"
+		"jreuteler/silverstripe-db-log": "1.0.1-alpha"
 	},
 	"require-dev": {
 		"phpunit/PHPUnit": "~3.7@stable"

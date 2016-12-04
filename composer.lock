@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a2bf5a4fe0761d4d4538de7d5b818291",
-    "content-hash": "b1f17971c76b295e808b201fd43afeb9",
+    "hash": "475022d156c7a88f01b478f4fa715887",
+    "content-hash": "12fbd0c7d5668747f62b59b31d872444",
     "packages": [
         {
             "name": "composer/installers",
@@ -116,16 +116,16 @@
         },
         {
             "name": "jreuteler/silverstripe-db-log",
-            "version": "dev-master",
+            "version": "1.0.1-alpha",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jreuteler/DbLog.git",
-                "reference": "d05411ae94089b2f79396d011194d28b1728aabc"
+                "reference": "c1bdbf1d8d57d8113ac5e262bfd4dab21698e429"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jreuteler/DbLog/zipball/d05411ae94089b2f79396d011194d28b1728aabc",
-                "reference": "d05411ae94089b2f79396d011194d28b1728aabc",
+                "url": "https://api.github.com/repos/jreuteler/DbLog/zipball/c1bdbf1d8d57d8113ac5e262bfd4dab21698e429",
+                "reference": "c1bdbf1d8d57d8113ac5e262bfd4dab21698e429",
                 "shasum": ""
             },
             "type": "silverstripe-module",
@@ -151,7 +151,7 @@
                 "logger",
                 "silverstripe"
             ],
-            "time": "2016-12-03 16:53:08"
+            "time": "2016-12-03 22:27:23"
         },
         {
             "name": "silverstripe-themes/simple",
@@ -888,7 +888,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "jreuteler/silverstripe-db-log": 20,
         "phpunit/phpunit": 0
     },
     "prefer-stable": true,
