@@ -12,11 +12,11 @@ class DynamicFormField
         "Timefield",
         "EmailField",
         "PhonenumberField",
-        "FileField",
         "HiddenField",
         "LabelField",
 
         // TODO: add/test
+        //"FileField",
         //"MoneyField",
         //"DatetimeField",
         //"OptionsetField",
@@ -64,7 +64,7 @@ class DynamicFormField
                 }
 
                 // temporary implementation to store value of simple fields
-                // TODO: refactor & extend
+                // TODO: refactor
                 $cookieName = $formActionName . '_' . $rsvpField->Name;
 
                 if (!self::inBackend() && $rsvpField->DoRemember && $storedValue = Cookie::get($cookieName)) {
