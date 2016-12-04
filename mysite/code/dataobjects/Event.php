@@ -18,7 +18,7 @@ class Event extends DataObject
         'FormFieldVersion' => 'Int', // TODO: implement logic to increment after every (relevant!) change on the form
     );
 
-    static $defaults = array('FormFieldVersion' => 1);
+    static $defaults = array('FormFieldVersion' => 1, 'EventImagesWidth'=> 640, 'EventImagesHeight' => 320);
 
     private static $has_one = array(
         'HeaderPhoto' => 'Image',
