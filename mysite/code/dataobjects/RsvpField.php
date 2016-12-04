@@ -33,6 +33,7 @@ class RsvpField extends DataObject
     // TODO: validation for fieldname value etc
     public function getCMSFields()
     {
+
         $fields = FieldList::create(
             TextField::create('Name'),
             TextField::create('Label'),
@@ -40,9 +41,16 @@ class RsvpField extends DataObject
             TextField::create('DefaultValue'),
             //DropdownField::create('DataType', 'DataType', $arrDataTypes),
             CheckboxField::create('IsMandatory', 'Mandatory'),
-            CheckboxField::create('DoRemember', 'Remember value'),
-            LabelField::create('Field-Preview: '),
-            DynamicFormField::createFieldFromRsvpConfig('Preview', $this),
+            CheckboxField::create('DoRemember', 'Remember value')
+        );
+
+        $dynamicField = DynamicFormField::createFieldFromRsvpConfig('Preview', $this);
+        if ($dynamicField) {
+            $fields->add(LabelField::create('Field-Preview: '));
+            $fields->add($dynamicField);
+        }
+
+        $fields->add(
             $setConfigs = new GridField(
                 'DefaultSetConfigs',
                 'DefaultSetConfigs',
@@ -56,10 +64,9 @@ class RsvpField extends DataObject
     }
 
 
-
     public function FieldType()
     {
-        if( $label = DynamicFormField::$dynamicFieldTypes[$this->FieldType] ) {
+        if ($label = DynamicFormField::$dynamicFieldTypes[$this->FieldType]) {
             return $label;
         }
 
