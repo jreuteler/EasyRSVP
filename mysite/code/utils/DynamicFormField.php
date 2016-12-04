@@ -31,7 +31,7 @@ class DynamicFormField
     public static function createFieldFromRsvpConfig($formActionName, $rsvpField)
     {
         if (!DynamicFormField::$dynamicFieldTypes[$rsvpField->FieldType]) {
-            return;
+            return false;
         }
 
         $className = DynamicFormField::$dynamicFieldTypes[$rsvpField->FieldType];
@@ -45,7 +45,6 @@ class DynamicFormField
 
             $setConfigs = $rsvpField->getManyManyComponents('DefaultSetConfigs');
 
-
             foreach ($setConfigs as $setConfig) {
 
                 // apply all defined setConfig on the given field
@@ -55,8 +54,8 @@ class DynamicFormField
                 } catch (Exception $e) {
                     $setConfig->HasError = 1;
                     $logMessage = "Invalid SetConfig added for field " . $field->Name . " \n
-                        - SetConfig(" . $setConfig->Name . ", " . $setConfig->Value . ") will be ignored. \n
-                        Exception: " . $e->getMessage();
+                        - SetConfig(" . $setConfig->Name . ", " . $setConfig->Value . ") not applied. \n
+                        Full exception: " . $e->getMessage();
                     DBLogger::log($logMessage, __METHOD__, SS_LOG_ERROR);
                 }
                 $setConfig->write();
@@ -74,6 +73,8 @@ class DynamicFormField
             }
 
             return $field;
+        } else {
+            return false;
         }
 
     }

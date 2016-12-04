@@ -4,7 +4,6 @@ class EventFile extends DataObject
 {
 
     public static $db = array(
-        'SortOrder' => 'Int',
         'Title' => 'Varchar',
         'AltText' => 'Varchar',
         'SortOrder' => 'Int',

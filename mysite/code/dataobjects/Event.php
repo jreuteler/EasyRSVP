@@ -5,7 +5,6 @@ class Event extends DataObject
 
     private static $db = array(
         'Title' => 'Varchar',
-        'Description' => 'Text',
         'HasTime' => 'Boolean',
         'HasEnd' => 'Boolean',
         'StartDate' => 'Datetime',
@@ -90,7 +89,7 @@ class Event extends DataObject
 
     public function RsvpFields()
     {
-        return $this->getManyManyComponents('RsvpFields')->sort('SortOrder');;
+        return $this->getManyManyComponents('RsvpFields')->sort('SortOrder');
     }
 
 
@@ -227,13 +226,13 @@ class Event extends DataObject
 
     public function Registrations()
     {
-        return sizeOf($this->RsvpRegistrations());
+        return sizeof($this->RsvpRegistrations());
     }
 
     public function AvailableSpots()
     {
         if ($this->MaxParticipants) {
-            return $this->MaxParticipants - sizeOf($this->RsvpRegistrations());
+            return $this->MaxParticipants - sizeof($this->RsvpRegistrations());
         }
         return '';
     }
