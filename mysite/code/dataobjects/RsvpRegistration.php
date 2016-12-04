@@ -73,10 +73,20 @@ class RsvpRegistration extends DataObject
     {
         $data = unserialize($this->Data);
         $implodedString = '';
-        $fieldsToIgnore = array('url', 'SecurityID', 'action_doSignup');
-        foreach ($data as $name => $value) {
-            if (!in_array($name, $fieldsToIgnore)) {
-                $implodedString .= $name . ': ' . $value . ' | ';
+
+        if (is_array($data) && sizeof($data) > 0) {
+            $fieldsToIgnore = array('url', 'SecurityID', 'action_doSignup');
+            foreach ($data as $name => $value) {
+                if (!in_array($name, $fieldsToIgnore)) {
+
+                    // TODO: refactor
+                    if (is_array($value) || is_object($value)) {
+                        $implodedString .= $name . ': ' . print_r($value, true) . ' | ';
+                    } else {
+                        $implodedString .= $name . ': ' . $value . ' | ';
+                    }
+
+                }
             }
         }
 
