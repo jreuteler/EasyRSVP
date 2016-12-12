@@ -74,7 +74,7 @@ class RsvpRegistration extends DataObject
         $data = unserialize($this->Data);
         $implodedString = '';
 
-        if (is_array($data) && sizeof($data) > 0) {
+        if( is_array($data) && sizeof($data) > 0 ) {
             $fieldsToIgnore = array('url', 'SecurityID', 'action_doSignup');
             foreach ($data as $name => $value) {
                 if (!in_array($name, $fieldsToIgnore)) {

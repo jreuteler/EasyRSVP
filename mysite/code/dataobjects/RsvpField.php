@@ -16,6 +16,8 @@ class RsvpField extends DataObject
     private static $many_many = array(
         'Events' => 'Event',
         'DefaultSetConfigs' => 'DefaultSetConfig',
+        'OptionSetConfigs' => 'OptionSetConfig',
+
     );
 
     private static $belongs_many_many = array(
@@ -49,7 +51,7 @@ class RsvpField extends DataObject
             $fields->add(LabelField::create('Field-Preview: '));
             $fields->add($dynamicField);
         }
-
+        
         $fields->add(
             $setConfigs = new GridField(
                 'DefaultSetConfigs',
@@ -59,6 +61,16 @@ class RsvpField extends DataObject
             )
 
         );
+
+        $optionSetConfigs = new GridField(
+            'OptionSetConfigs',
+            'OptionSetConfigs',
+            $this->OptionSetConfigs(),
+            GridFieldConfig_RelationEditor::create()
+        );
+
+        $fields->add($optionSetConfigs);
+
 
         return $fields;
     }

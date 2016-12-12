@@ -14,12 +14,19 @@ class DynamicFormField
         "PhonenumberField",
         "HiddenField",
         "LabelField",
-
+        "DropdownField",
+        "OptionsetField",
+        //"TreeDropdownField",
+        //"TreeMultiSelectField",
+        "ListboxField",
+        "CheckboxSetField",
+        "FileField",
+        //"UploadField",
+        //"AssetField",
         // TODO: add/test
         //"FileField",
         //"MoneyField",
         //"DatetimeField",
-        //"OptionsetField",
         //"UploadField",
         //"AssetField",
         //"CheckboxSetField",
@@ -39,10 +46,24 @@ class DynamicFormField
         if (class_exists($className) && is_subclass_of(new $className('test'), 'FormField') && in_array($className, self::$dynamicFieldTypes)) {
 
             try {
+
+                $optionSetConfigs = $rsvpField->getManyManyComponents('OptionSetConfigs');
+                $optionSetConfigArray = array();
+                foreach ($optionSetConfigs as $optionSetConfig) {
+                    $optionSetConfigArray[$optionSetConfig->Value] = $optionSetConfig->Name;
+                }
+
                 if ($rsvpField->Label)
-                    $field = $className::create($rsvpField->Name, $rsvpField->Label);
+                    $field = $className::create($rsvpField->Name, $rsvpField->Label); //,$source, $value
                 else
-                    $field = $className::create($rsvpField->Name);
+                    $field = $className::create($rsvpField->Name); //, $source, $value
+
+
+                // ->setHasEmptyDefault(true);
+                if (method_exists($field, 'setEmptyString')) {
+                    $field->setHasEmptyDefault(true);
+                    //$field->setEmptyString('');
+                }
 
                 $setConfigs = $rsvpField->getManyManyComponents('DefaultSetConfigs');
 
@@ -54,10 +75,6 @@ class DynamicFormField
                         $setConfig->HasError = 0;
                     } catch (Exception $e) {
                         $setConfig->HasError = 1;
-                        $logMessage = "Invalid SetConfig added for field " . $field->Name . " \n
-                        - SetConfig(" . $setConfig->Name . ", " . $setConfig->Value . ") not applied. \n
-                        Full exception: " . $e->getMessage();
-                        DBLogger::log($logMessage, __METHOD__, SS_LOG_ERROR);
                     }
                     $setConfig->write();
 
@@ -67,11 +84,35 @@ class DynamicFormField
                 // TODO: refactor
                 $cookieName = $formActionName . '_' . $rsvpField->Name;
 
-                if (!self::inBackend() && $rsvpField->DoRemember && $storedValue = Cookie::get($cookieName)) {
-                    $field->value = $storedValue;
-                } else if ($rsvpField->DefaultValue) {
-                    $field->value = $rsvpField->DefaultValue;
+                // attempt to set options
+                if ($optionSetConfigArray && count($optionSetConfigArray) > 0) {
+
+                    try {
+                        $field->setSource($optionSetConfigArray);
+                        DBLogger::log('$rsvpField->DefaultValue: ' . $rsvpField->DefaultValue, __METHOD__, SS_LOG_ERROR);
+
+                    } catch (Exception $e) {
+                        $logMessage = "Invalid Source " . $e->getMessage();
+                        DBLogger::log($logMessage, __METHOD__, SS_LOG_ERROR);
+                    }
+
                 }
+
+                // attempt to set default value
+                try {
+                    if ($rsvpField->DefaultValue && in_array($rsvpField->DefaultValue, $optionSetConfigArray)) {
+                        $field->setValue($rsvpField->DefaultValue);
+                    }
+                } catch (Exception $e) {
+                }
+
+                // check if cached values available in cookie (for Frontend only)
+                if (!self::inBackend() && $rsvpField->DoRemember && $storedValue = Cookie::get($cookieName)) {
+                    $field->setValue($storedValue);
+                } else if ($rsvpField->DefaultValue) {
+                    $field->setValue($rsvpField->DefaultValue);
+                }
+
 
                 return $field;
             } catch (Exception $e) {
