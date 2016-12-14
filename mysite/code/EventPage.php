@@ -87,70 +87,79 @@ class EventPage_Controller extends Page_Controller
         // TODO: check if maximum was reached in the meantime and if so, inform user
 
         Session::set("FormData.{$form->getName()}.data", $data);
-        $rsvpFields = $this->Event()->getManyManyComponents('RsvpFields')->sort('SortOrder');
 
-        $emailData = array();
-        foreach ($rsvpFields as $rsvpField) {
+        if ($this->AvailableSpots() != 0) {
 
-            $formField = $form->Fields()->fieldByName($rsvpField->Name);
-            if ($rsvpField->DoRemember) {
-                // temporary implementation to retrieve value of simple fields
-                $cookieName = self::$formActionName . '_' . $rsvpField->Name;
-                Cookie::set($cookieName, $formField->value);
-            }
+            $rsvpFields = $this->Event()->getManyManyComponents('RsvpFields')->sort('SortOrder');
+            $emailData = array();
+            foreach ($rsvpFields as $rsvpField) {
 
-            $emailData[] = array('Name' => $rsvpField->Name, 'Value' => $formField->value);
-        }
-
-        $registration = RsvpRegistration::create();
-        $registration->EventID = $this->Event()->ID;
-        $registration->FormFieldVersion = $this->Event()->FormFieldVersion;
-        $registration->Data = serialize($data);
-
-        // $form->saveInto($signUp);
-        $registration->write();
-
-        Session::clear("FormData.{$form->getName()}.data");
-        $form->sessionMessage('Thanks for signing up!', 'good');
-
-
-        // send notifications
-        if ($this->Event()->UseNotifications) {
-
-            $notifications = $this->Event()->RsvpNotifications();
-            foreach ($notifications as $notification) {
-
-                if ($notification->IsActive) {
-
-                    $recieverEmail = $notification->Email;
-                    if ($notification->NotificateMember) {
-                        $recieverEmail = $notification->Member()->Email;
-                    }
-
-                    echo $notification->Email();
-
-                    $sent = EmailHelper::sendRegistrationNotification($recieverEmail, 'New registration for ' . $this->Event()->Title, 'RsvpNotificationEmail', $this->Event(), $emailData);
-
-                    if ($sent) {
-                        $notification->NotificationDeliveries++;
-                    } else {
-                        $notification->NotificationDeliveryFailures++;
-                    }
-                    $notification->write();
-
+                $formField = $form->Fields()->fieldByName($rsvpField->Name);
+                if ($rsvpField->DoRemember) {
+                    // temporary implementation to retrieve value of simple fields
+                    $cookieName = self::$formActionName . '_' . $rsvpField->Name;
+                    Cookie::set($cookieName, $formField->value);
                 }
 
+                $emailData[] = array('Name' => $rsvpField->Name, 'Value' => $formField->value);
             }
-        }
 
-        return $this->redirectBack();
+            $registration = RsvpRegistration::create();
+            $registration->EventID = $this->Event()->ID;
+            $registration->FormFieldVersion = $this->Event()->FormFieldVersion;
+            $registration->Data = serialize($data);
+
+            // $form->saveInto($signUp);
+            $registration->write();
+
+            Session::clear("FormData.{$form->getName()}.data");
+            $form->sessionMessage('Thanks for signing up!', 'good');
+
+            // send notifications
+            if ($this->Event()->UseNotifications) {
+
+                $notifications = $this->Event()->RsvpNotifications();
+                foreach ($notifications as $notification) {
+
+                    if ($notification->IsActive) {
+
+                        $recieverEmail = $notification->Email;
+                        if ($notification->NotificateMember) {
+                            $recieverEmail = $notification->Member()->Email;
+                        }
+
+                        $sent = EmailHelper::sendRegistrationNotification($recieverEmail, 'New registration for ' . $this->Event()->Title, 'RsvpNotificationEmail', $this->Event(), $emailData);
+
+                        if ($sent) {
+                            $notification->NotificationDeliveries++;
+                        } else {
+                            $notification->NotificationDeliveryFailures++;
+                        }
+                        $notification->write();
+
+                    }
+
+                }
+            }
+
+            return $this->redirectBack();
+
+
+        } else {
+            Session::clear("FormData.{$form->getName()}.data");
+            $form->sessionMessage(' There are unfortunately no more spots available!', 'bad');
+        }
 
     }
 
 
     public function AvailableSpots()
     {
-        return $this->Event()->AvailableSpots();
+        if($this->Event()) {
+            return $this->Event()->AvailableSpots();
+        }
+
+        return '';
     }
 
 }
