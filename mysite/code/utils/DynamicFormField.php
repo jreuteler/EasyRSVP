@@ -16,23 +16,17 @@ class DynamicFormField
         "LabelField",
         "DropdownField",
         "OptionsetField",
-        //"TreeDropdownField",
-        //"TreeMultiSelectField",
         "ListboxField",
         "CheckboxSetField",
         "FileField",
+        //"TreeDropdownField",
+        //"TreeMultiSelectField",
         //"UploadField",
         //"AssetField",
-        // TODO: add/test
-        //"FileField",
         //"MoneyField",
         //"DatetimeField",
         //"UploadField",
         //"AssetField",
-        //"CheckboxSetField",
-        //"TreeDropdownField",
-        //"TreeMultiSelectField",
-        //"ListboxField",
     );
 
     public static function createFieldFromRsvpConfig($formActionName, $rsvpField)
@@ -58,8 +52,6 @@ class DynamicFormField
                 else
                     $field = $className::create($rsvpField->Name); //, $source, $value
 
-
-                // ->setHasEmptyDefault(true);
                 if (method_exists($field, 'setEmptyString')) {
                     $field->setHasEmptyDefault(true);
                     //$field->setEmptyString('');

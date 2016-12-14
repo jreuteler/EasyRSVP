@@ -10,7 +10,6 @@ class RsvpField extends DataObject
         'IsMandatory' => 'Boolean',
         'DoRemember' => 'Boolean',
         'DefaultValue' => 'Varchar',
-        //TODO: ->addExtraClass('form-control'),
     );
 
     private static $many_many = array(
@@ -32,7 +31,7 @@ class RsvpField extends DataObject
         'SetConfig'
     );
 
-    // TODO: validation for fieldname value etc
+    // TODO: validation
     public function getCMSFields()
     {
 

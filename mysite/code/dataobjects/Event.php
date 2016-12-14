@@ -15,7 +15,7 @@ class Event extends DataObject
         'UseNotifications' => 'Boolean',
         'EventImagesWidth' => 'Int',
         'EventImagesHeight' => 'Int',
-        'FormFieldVersion' => 'Int', // TODO: implement logic to increment after every (relevant!) change on the form
+        'FormFieldVersion' => 'Int', // TODO: increment after every relevant change on the form
     );
 
     static $defaults = array('FormFieldVersion' => 1, 'EventImagesWidth'=> 640, 'EventImagesHeight' => 320);
